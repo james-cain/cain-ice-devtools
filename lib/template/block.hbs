@@ -10,8 +10,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@icedesign/skin/index.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@icedesign/skin/override.css">
   {{/if}}
-  {{#if isVue}}
+  {{#if isVuePC}}
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  {{else}}
+  <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
   {{/if}}
 
   {{#if isBlock}}
@@ -38,9 +40,12 @@
   {{#if isReact}}
   <script src="https://g.alicdn.com/code/npm/??react/16.2.0/umd/react.development.js,react-dom/16.2.0/umd/react-dom.development.js"></script>
   {{/if}}
-  {{#if isVue}}
+  {{#if isVuePC}}
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  {{else}}
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/mint-ui/lib/index.js"></script>
   {{/if}}
 </body>
 
@@ -58,7 +63,7 @@ function getDefaultOrSelf(mod) {
     {{> initReact }}
   {{/if}}
 
-  {{#if isVue}}
+  {{#if isVuePC}}
     {{> initVue }}
   {{/if}}
 </script>
