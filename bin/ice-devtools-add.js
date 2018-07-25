@@ -13,9 +13,11 @@ const generate = require('../lib/generate');
 const checkVersion = require('../lib/check-version');
 const localPath = require('../lib/local-path');
 const download = require('../lib/download');
+const { getMaterials } = require('../lib/server/utils');
 
 const isLocalPath = localPath.isLocalPath;
 const getTemplatePath = localPath.getTemplatePath;
+const cwd = process.cwd();
 
 /**
  * Usage.
@@ -61,6 +63,7 @@ let to;
 let templateName;
 let templateType;
 let materialType;
+let terminalType;
 
 const materialCate = [
   {
@@ -96,6 +99,7 @@ const materialCate = [
 function initAdd() {
   if (!program.args.length) {
     const defaultData = getDefaultData();
+    const materials = getMaterials(cwd);
 
     if (defaultData.materialType.length > 1) {
       materialCate.push({
@@ -117,6 +121,11 @@ function initAdd() {
       .then((answers) => {
         templateType = answers.template.type;
         materialType = answers.materialType || defaultData.materialType[0];
+        materials.find((m) => {
+          if (m.type === materialType) {
+            terminalType = m.terminal;
+          }
+        });
 
         if (templateType === 'scaffold') {
           templateName = `ice-${materialType}-app-template`;
@@ -124,6 +133,13 @@ function initAdd() {
           templateName = `ice-${materialType}-${templateType}-template`;
         }
 
+        if (materialType === 'vue' && terminalType === 'pc' && templateType === 'block') {
+          templateName = `cain-${materialType}-block-template`;
+        }
+
+        if (materialType === 'vue' && terminalType === 'mobile' && templateType === 'block') {
+          templateName = `cain-${materialType}-mobile-block-template`;
+        }
         run(templateName, templateType);
       })
       .catch((err) => {
@@ -208,7 +224,7 @@ function downloadAndGenerate(template) {
   const downloadspinner = ora('downloading template');
   downloadspinner.start();
 
-  const tmp = path.join(home, '.ice-templates', templateName);
+  const tmp = path.join(home, '.cain-ice-templates', templateName);
 
   if (exists(tmp)) rm(tmp);
   download({ template })
