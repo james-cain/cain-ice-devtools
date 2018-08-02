@@ -52,7 +52,6 @@ function checkAndQueryNpmTime(
         typeof data.versions[data['dist-tags'][version] || version] ===
         'undefined'
       ) {
-        console.log(packageRegistryUrl);
         throw new Error(`${npm}@${version} 未发布! 禁止提交!`);
       }
       return [0, data.time];
